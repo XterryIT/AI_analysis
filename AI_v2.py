@@ -8,7 +8,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-
+# We are training only 2 modules and in the end we have a tree. First model telling it is DoH or Non-DoH, second model telling it is Benign or Malicious.
 
 def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
     

@@ -11,6 +11,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 
+# General test for all models
+
 
 def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
     
