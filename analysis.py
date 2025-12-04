@@ -1,10 +1,10 @@
 import pandas as pd
 
 # Załóżmy, że analizujesz jeden z plików
-# df_doh = pd.read_csv('CSVs/Total_CSVs/l1-doh.csv')
-# df_non_doh = pd.read_csv('CSVs/Total_CSVs/l1-nondoh.csv')
-# df_benign = pd.read_csv('CSVs/Total_CSVs/l2-benign.csv')
-# df_malicious = pd.read_csv('CSVs/Total_CSVs/l2-malicious.csv')
+df_doh = pd.read_csv('CSVs/Total_CSVs/l1-doh.csv')
+df_non_doh = pd.read_csv('CSVs/Total_CSVs/l1-nondoh.csv')
+df_benign = pd.read_csv('CSVs/Total_CSVs/l2-benign.csv')
+df_malicious = pd.read_csv('CSVs/Total_CSVs/l2-malicious.csv')
 
 
 
@@ -99,17 +99,17 @@ import pandas as pd
 #Making huge amnount of data for BIG testing
 
 
-skip_count = 20000  # How many rows to skip
-read_count = 50000  # How many rows to read
+# skip_count = 20000  # How many rows to skip
+# read_count = 50000  # How many rows to read
 
 
-rows_to_skip = range(1, skip_count + 1)
+# rows_to_skip = range(1, skip_count + 1)
 
 
-df_doh = pd.read_csv('CSVs/Total_CSVs/l1-doh.csv', skiprows=rows_to_skip, nrows=read_count)
-df_non_doh = pd.read_csv('CSVs/Total_CSVs/l1-nondoh.csv', skiprows=rows_to_skip, nrows=read_count)
-df_benign = pd.read_csv('CSVs/Total_CSVs/l2-benign.csv', skiprows=rows_to_skip, nrows=read_count)
-df_malicious = pd.read_csv('CSVs/Total_CSVs/l2-malicious.csv', skiprows=rows_to_skip, nrows=read_count)
+# df_doh = pd.read_csv('CSVs/Total_CSVs/l1-doh.csv', skiprows=rows_to_skip, nrows=read_count)
+# df_non_doh = pd.read_csv('CSVs/Total_CSVs/l1-nondoh.csv', skiprows=rows_to_skip, nrows=read_count)
+# df_benign = pd.read_csv('CSVs/Total_CSVs/l2-benign.csv', skiprows=rows_to_skip, nrows=read_count)
+# df_malicious = pd.read_csv('CSVs/Total_CSVs/l2-malicious.csv', skiprows=rows_to_skip, nrows=read_count)
 
 
 doh_temp = df_doh.head(50000).copy()
