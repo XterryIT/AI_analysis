@@ -12,6 +12,49 @@ from imblearn.over_sampling import SMOTE
 
 np.set_printoptions(suppress=True)
 
+def print_full_evaluation_report(cm):
+    """
+    Prints a labeled Confusion Matrix followed by a detailed analysis 
+    of the Malicious class performance.
+    
+    Assumed class order: [0: Non-DoH, 1: Benign, 2: Malicious]
+    """
+    # Define class labels for the report
+    labels = ["Non-DoH", "Benign", "Malicious"]
+    
+    # 1. PRINT LABELED MATRIX
+    print("\n" + "="*60)
+    print("CONFUSION MATRIX")
+    print("="*60)
+    
+    # Print Column Headers (Predictions)
+    # The formatting {:>15} aligns text to the right with 15 spaces width
+    header = f"{'':>15} | {'Pred: ' + labels[0]:>15} | {'Pred: ' + labels[1]:>15} | {'Pred: ' + labels[2]:>15}"
+    print(header)
+    print("-" * len(header))
+    
+    # Print Rows (Actual / True Labels)
+    for i, row_label in enumerate(labels):
+        row_str = f"{'Act: ' + row_label:>15} | {cm[i, 0]:>15} | {cm[i, 1]:>15} | {cm[i, 2]:>15}"
+        print(row_str)
+    
+    print("-" * len(header))
+    
+    # 2. PRINT MALICIOUS ANALYSIS (The logic we added earlier)
+    # Index 2 represents the Malicious class
+    mal_idx = 2
+    
+    # Retrieve values from the matrix
+    tp = cm[mal_idx, 2] # True Positives (Malicious correctly identified)
+    fn_nondoh = cm[mal_idx, 0] # Missed: Malicious -> Non-DoH
+    fn_benign = cm[mal_idx, 1] # Missed: Malicious -> Benign (Critical)
+    total_fn = fn_nondoh + fn_benign
+    
+    print("\nMALICIOUS TRAFFIC ANALYSIS (Security Focus):")
+    print(f"- True Positives: {tp}")
+    print(f"- False Negatives (Missed Attacks): {total_fn}")
+    print(f"  --> Breakdown: {fn_nondoh} predicted as Non-DoH + {fn_benign} as Benign.")
+    print("="*60 + "\n")
 
 def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
 
@@ -29,8 +72,8 @@ def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2])
 
     print(f"Model Accuracy: {accuracy * 100:.2f}%")
-    print("Confusion Matrix (3x3):")
-    print(cm)
+    print("\n")
+    print_full_evaluation_report(cm)
     
     print("\nClassification Report (0=NonDoH, 1=Benign, 2=Malicious):")
     # Use target_names to make the report readable
@@ -60,8 +103,8 @@ def AdaBoost_Model(X_train, X_test, y_train, y_test, feature_names):
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2])
 
     print(f"Model Accuracy: {accuracy * 100:.2f}%")
-    print("Confusion Matrix (3x3):")
-    print(cm)
+    print("\n")
+    print_full_evaluation_report(cm)
     
     print("\nClassification Report (0=NonDoH, 1=Benign, 2=Malicious):")
     # Use target_names to make the report readable

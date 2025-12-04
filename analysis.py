@@ -71,7 +71,7 @@ import pandas as pd
 
 # ---------------------------------------------------------------------------
 
-# #Data Version 3 for AI 3
+# #Data Version 3 for AI 3 (Training data)
 
 # doh_temp = df_doh.head(20000).copy()
 # non_doh_temp = df_non_doh.head(20000).copy()
@@ -96,7 +96,7 @@ import pandas as pd
 
 
 
-#Making huge amnount of data 
+#Making huge amnount of data for BIG testing
 
 
 skip_count = 20000  # How many rows to skip
