@@ -7,13 +7,13 @@ import numpy as np
 from sklearn.ensemble import AdaBoostClassifier
 from imblearn.over_sampling import SMOTE
 
-# Here i Will try to decrease FN in Malicious detections by using: class_weight, AdaBoost, Oversampling.
-# Data we using as same for AI_v3
+# Here I will try to decrease FN in Malicious detections by using: class_weight, AdaBoost, Oversampling.
+# Data we use as same for AI_v3
 
 np.set_printoptions(suppress=True)
 
 
-def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
+def random_forest_model(x_train, x_test, y_train, y_test, feature_names):
 
     # weights = {0: 1, 1: 1, 2: 8}
 
@@ -21,8 +21,8 @@ def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
     
     # 100 trees is a good starting point
     model = RandomForestClassifier(n_estimators=100, random_state=42) 
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     # Explicitly set labels to ensure [0, 1, 2] order in the matrix
@@ -38,7 +38,7 @@ def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
     
 
 #AdaBost Model
-def AdaBoost_Model(X_train, X_test, y_train, y_test, feature_names):
+def adaboost_model(x_train, x_test, y_train, y_test, feature_names):
 
     print(f"\n--- Results for: Random Forest (Multiclass) ---")
     
@@ -52,8 +52,8 @@ def AdaBoost_Model(X_train, X_test, y_train, y_test, feature_names):
     )
 
 
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     # Explicitly set labels to ensure [0, 1, 2] order in the matrix
@@ -87,7 +87,7 @@ def main():
     df.fillna(0, inplace=True)
 
 
-    X = df.drop(['Label'], axis=1) 
+    x = df.drop(['Label'], axis=1)
 
     y = df['Label']
 
@@ -96,7 +96,7 @@ def main():
     print("(0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)\n")
 
     # Split data for training and testing
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=300)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=300)
 
     
     # print('\nRandom Forest Model Results:')
@@ -111,7 +111,7 @@ def main():
     print("\nApplying SMOTE (Oversampling) to the training data...")
     # We only apply this to the TRAINING data, never the TEST data!
     smote = SMOTE(random_state=42)
-    X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
+    x_train_resampled, y_train_resampled = smote.fit_resample(x_train, y_train)
     
     print("Oversampling complete. New training class distribution:")
     print(pd.Series(y_train_resampled).value_counts().sort_index())
@@ -119,7 +119,7 @@ def main():
 
     # Now we train our models on the RESAMPLED data
     print('\nRandom Forest Model Results (with SMOTE):')
-    Random_Forest_model(X_train_resampled, X_test, y_train_resampled, y_test, X.columns)
+    random_forest_model(x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
     print("-"*100)
     
     
@@ -133,13 +133,13 @@ if __name__ == "__main__":
 
 # Condition 1:
 #
-# We are implmented a punishment for wrong choice for model especialy for Malicious DoH (class 2)
+# We are implemented a punishment for wrong choice for model especially for Malicious DoH (class 2)
 #
 #
 # Conclusion 1:
 # 
-# We see that presents result are worse than previous and we don`t see any increases`
-# Especialy here methods of weights does not working
+# We see that presents result are worse than previous, and we don`t see any increases`
+# Especially here methods of weights does not work
 #
 #
 #Previous Results:
@@ -183,7 +183,7 @@ if __name__ == "__main__":
 #
 # Conclusion 2: 
 #
-# The same situation like with weights - the results are worse than previous without AdaBoost
+# The same situation as with weights - the results are worse than previous without AdaBoost
 # --- Results for: Random Forest (Multiclass) ---
 # Model Accuracy: 91.99%
 # Confusion Matrix (3x3):
@@ -213,7 +213,7 @@ if __name__ == "__main__":
 #
 # Conclusion 3:
 #
-# The resuls are better than previous attemps but accurancy increase a little bit.
+# The results are better than previous attempts but accuracy increase a little bit.
 #
 # Applying SMOTE (Oversampling) to the training data...
 # Oversampling complete. New training class distribution:
@@ -246,8 +246,8 @@ if __name__ == "__main__":
 #
 #
 #
-# Genereal Conclusion:
+# General Conclusion:
 # We tested 3 methods to decrease FN for Malicious DoH detection:
 # In 2 case (the weights and AdaBoost) the results became worse.
 # Only Oversampling (SMOTE) helped to increase the results a bit.
-# Generaly we need all the calculation beacuse model Random Forest better indicate this parametrs
+# Generally we need all the calculation because model Random Forest better indicate this parameters
