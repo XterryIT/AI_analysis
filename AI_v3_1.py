@@ -150,8 +150,8 @@ if __name__ == "__main__":
 #  [   72 11811    83]
 #  [   29   138  5845]]
 #
-#
-#
+# 5837 - TP for NonDoH
+# False Negatives (Missed Attacks): 167 (29 predicted as Non-DoH + 138 as Benign).
 #
 #Present Results:
 # --- Results for: Random Forest (Multiclass) ---
@@ -160,14 +160,17 @@ if __name__ == "__main__":
 # [[ 5840   115    10]
 #  [   70 11813    83]
 #  [   27   151  5834]]
-
+#
+#True Positives: 5834 (Slightly lower than Matrix 1).
+#   - False Negatives (Missed Attacks): 178 (27 + 151).
+#
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support
-
+#
 #    NonDoH (0)       0.98      0.98      0.98      5965
 #    Benign (1)       0.98      0.99      0.98     11966
 # Malicious (2)       0.98      0.97      0.98      6012
-
+#
 #      accuracy                           0.98     23943
 #     macro avg       0.98      0.98      0.98     23943
 #  weighted avg       0.98      0.98      0.98     23943
@@ -190,7 +193,10 @@ if __name__ == "__main__":
 # [[ 5574   307    84]
 #  [  522 10851   593]
 #  [   90   323  5599]]
-
+#   
+# True Positives: 5599 (Lowest among all matrices).
+#   False Negatives (Missed Attacks): 413 (90 + 323).
+#
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support
 
@@ -231,6 +237,9 @@ if __name__ == "__main__":
 # [[ 5863    89    13]
 #  [   70 11781   115]
 #  [   32   115  5865]]
+
+#- True Positives: 5865 (Highest among all matrices).
+#   - False Negatives (Missed Attacks): 147 (32 + 115).
 
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support

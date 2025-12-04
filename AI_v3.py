@@ -153,7 +153,9 @@ if __name__ == "__main__":
 # [[ 5837   116    12]
 #  [   72 11811    83]
 #  [   29   138  5845]]
-#
+
+#   5837 - TP for NonDoH
+# False Negatives (Missed Attacks): 167 (29 predicted as Non-DoH + 138 as Benign).
 #
 #--- FEATURE IMPORTANCE ---
 # Top 10 features used by the model:
