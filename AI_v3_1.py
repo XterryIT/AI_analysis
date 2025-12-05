@@ -12,6 +12,49 @@ from imblearn.over_sampling import SMOTE
 
 np.set_printoptions(suppress=True)
 
+def print_full_evaluation_report(cm):
+    """
+    Prints a labeled Confusion Matrix followed by a detailed analysis 
+    of the Malicious class performance.
+    
+    Assumed class order: [0: Non-DoH, 1: Benign, 2: Malicious]
+    """
+    # Define class labels for the report
+    labels = ["Non-DoH", "Benign", "Malicious"]
+    
+    # 1. PRINT LABELED MATRIX
+    print("\n" + "="*60)
+    print("CONFUSION MATRIX")
+    print("="*60)
+    
+    # Print Column Headers (Predictions)
+    # The formatting {:>15} aligns text to the right with 15 spaces width
+    header = f"{'':>15} | {'Pred: ' + labels[0]:>15} | {'Pred: ' + labels[1]:>15} | {'Pred: ' + labels[2]:>15}"
+    print(header)
+    print("-" * len(header))
+    
+    # Print Rows (Actual / True Labels)
+    for i, row_label in enumerate(labels):
+        row_str = f"{'Act: ' + row_label:>15} | {cm[i, 0]:>15} | {cm[i, 1]:>15} | {cm[i, 2]:>15}"
+        print(row_str)
+    
+    print("-" * len(header))
+    
+    # 2. PRINT MALICIOUS ANALYSIS (The logic we added earlier)
+    # Index 2 represents the Malicious class
+    mal_idx = 2
+    
+    # Retrieve values from the matrix
+    tp = cm[mal_idx, 2] # True Positives (Malicious correctly identified)
+    fn_nondoh = cm[mal_idx, 0] # Missed: Malicious -> Non-DoH
+    fn_benign = cm[mal_idx, 1] # Missed: Malicious -> Benign (Critical)
+    total_fn = fn_nondoh + fn_benign
+    
+    print("\nMALICIOUS TRAFFIC ANALYSIS (Security Focus):")
+    print(f"- True Positives: {tp}")
+    print(f"- False Negatives (Missed Attacks): {total_fn}")
+    print(f"  --> Breakdown: {fn_nondoh} predicted as Non-DoH + {fn_benign} as Benign.")
+    print("="*60 + "\n")
 
 def random_forest_model(x_train, x_test, y_train, y_test, feature_names):
 
@@ -29,8 +72,8 @@ def random_forest_model(x_train, x_test, y_train, y_test, feature_names):
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2])
 
     print(f"Model Accuracy: {accuracy * 100:.2f}%")
-    print("Confusion Matrix (3x3):")
-    print(cm)
+    print("\n")
+    print_full_evaluation_report(cm)
     
     print("\nClassification Report (0=NonDoH, 1=Benign, 2=Malicious):")
     # Use target_names to make the report readable
@@ -60,8 +103,8 @@ def adaboost_model(x_train, x_test, y_train, y_test, feature_names):
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2])
 
     print(f"Model Accuracy: {accuracy * 100:.2f}%")
-    print("Confusion Matrix (3x3):")
-    print(cm)
+    print("\n")
+    print_full_evaluation_report(cm)
     
     print("\nClassification Report (0=NonDoH, 1=Benign, 2=Malicious):")
     # Use target_names to make the report readable
@@ -150,8 +193,8 @@ if __name__ == "__main__":
 #  [   72 11811    83]
 #  [   29   138  5845]]
 #
-#
-#
+# 5837 - TP for NonDoH
+# False Negatives (Missed Attacks): 167 (29 predicted as Non-DoH + 138 as Benign).
 #
 #Present Results:
 # --- Results for: Random Forest (Multiclass) ---
@@ -160,14 +203,17 @@ if __name__ == "__main__":
 # [[ 5840   115    10]
 #  [   70 11813    83]
 #  [   27   151  5834]]
-
+#
+#True Positives: 5834 (Slightly lower than Matrix 1).
+#   - False Negatives (Missed Attacks): 178 (27 + 151).
+#
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support
-
+#
 #    NonDoH (0)       0.98      0.98      0.98      5965
 #    Benign (1)       0.98      0.99      0.98     11966
 # Malicious (2)       0.98      0.97      0.98      6012
-
+#
 #      accuracy                           0.98     23943
 #     macro avg       0.98      0.98      0.98     23943
 #  weighted avg       0.98      0.98      0.98     23943
@@ -190,7 +236,10 @@ if __name__ == "__main__":
 # [[ 5574   307    84]
 #  [  522 10851   593]
 #  [   90   323  5599]]
-
+#   
+# True Positives: 5599 (Lowest among all matrices).
+#   False Negatives (Missed Attacks): 413 (90 + 323).
+#
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support
 
@@ -231,6 +280,9 @@ if __name__ == "__main__":
 # [[ 5863    89    13]
 #  [   70 11781   115]
 #  [   32   115  5865]]
+
+#- True Positives: 5865 (Highest among all matrices).
+#   - False Negatives (Missed Attacks): 147 (32 + 115).
 
 # Classification Report (0=NonDoH, 1=Benign, 2=Malicious):
 #                precision    recall  f1-score   support

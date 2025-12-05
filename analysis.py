@@ -26,4 +26,4 @@ merged_df = pd.concat([non_doh_temp, doh_temp, benign_temp, malicious_temp], ign
 merged_df.drop(columns=columns_to_drop, inplace=True)
 print(merged_df.shape[0])
 print(merged_df.shape[1])
-merged_df.to_csv('merged_sample.csv', index=False)
+merged_df.to_csv('ultimate_sample.csv', index=False)
