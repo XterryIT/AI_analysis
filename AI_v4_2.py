@@ -46,8 +46,13 @@ def print_report(y_true, y_pred):
     print(classification_report(y_true, y_pred, labels=[0, 1, 2], 
                                 target_names=['Non-DoH', 'Benign', 'Malicious'], digits=4))
 
+
+
+
+
 def main():
     print("### STARTING MODEL EVALUATION ###")
+
 
     # 1. Load Model and Features
     print(f"[1] Loading model and feature list...")
@@ -94,6 +99,22 @@ def main():
     # 4. Prediction
     print("[4] Model is generating predictions...")
     y_pred = model.predict(X_new)
+
+    try:
+        df = pd.read_csv('ultimate_sample.csv')
+    except FileNotFoundError:
+        print("ERROR: File 'ultimate_sample.csv' not found!")
+        return 
+
+    df.fillna(0, inplace=True)
+
+    X = df.drop(['Label'], axis=1) 
+    y = df['Label']
+
+    print(y.value_counts().sort_index())
+    print("(0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)\n")
+
+
 
     # 5. Output Results
     print_report(y_true, y_pred)

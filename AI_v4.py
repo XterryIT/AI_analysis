@@ -41,17 +41,16 @@ def print_full_evaluation_report(cm):
     print(f"  --> Breakdown: {fn_nondoh} predicted as Non-DoH + {fn_benign} as Benign.")
     print("="*60 + "\n")
 
-def train_rf_model(X_train, X_test, y_train, y_test):
-    """
-    Trains the Random Forest model and returns the trained object.
-    """
+def train_rf_model(x_train, x_test, y_train, y_test):
     print(f"\n--- Results for: Random Forest (Multiclass) ---")
     
+    # 100 trees is a good starting point
     model = RandomForestClassifier(n_estimators=100, random_state=42) 
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
+    # Explicitly set labels to ensure [0, 1, 2] order in the matrix
     cm = confusion_matrix(y_test, y_pred, labels=[0, 1, 2])
 
     print(f"Model Accuracy: {accuracy * 100:.2f}%")
@@ -59,6 +58,7 @@ def train_rf_model(X_train, X_test, y_train, y_test):
     print_full_evaluation_report(cm)
     
     print("\nClassification Report (0=NonDoH, 1=Benign, 2=Malicious):")
+    # Use target_names to make the report readable
     print(classification_report(y_test, y_pred, labels=[0, 1, 2], target_names=['NonDoH (0)', 'Benign (1)', 'Malicious (2)']))
 
 
