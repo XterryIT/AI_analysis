@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier
+#from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import numpy as np
 
@@ -52,16 +52,16 @@ def print_full_evaluation_report(cm):
     print(f"  --> Breakdown: {fn_nondoh} predicted as Non-DoH + {fn_benign} as Benign.")
     print("="*60 + "\n")
 
-def Random_Forest_model(X_train, X_test, y_train, y_test, feature_names):
+def random_forest_model(x_train, x_test, y_train, y_test, feature_names):
     """
-    feature_names - it is columns in data (X.columns)
+    feature_names - it is columns in data (x.columns)
     """
     print(f"\n--- Results for: Random Forest (Multiclass) ---")
     
     # 100 trees is a good starting point
     model = RandomForestClassifier(n_estimators=100, random_state=42) 
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     # Explicitly set labels to ensure [0, 1, 2] order in the matrix
@@ -118,7 +118,7 @@ def main():
     df.fillna(0, inplace=True)
 
     # X = Features (all columns EXCEPT the one we are predicting)
-    X = df.drop(['Label'], axis=1) 
+    x = df.drop(['Label'], axis=1)
     # y = Target (the ONE column we are predicting)
     y = df['Label']
 
@@ -127,17 +127,17 @@ def main():
     print("(0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)\n")
 
     # Split data for training and testing
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=300)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=300)
 
     # --- CHANGE IS HERE ---
-    # We pass X.columns (the column names) to the function
+    # We pass x.columns (the column names) to the function
     print('\nRandom Forest Model Results:')
-    Random_Forest_model(X_train, X_test, y_train, y_test, X.columns)
+    random_forest_model(x_train, x_test, y_train, y_test, x.columns)
     print("-"*100)
     
     # (I commented out DecisionTree to speed up the test)
     # print('Decision Tree Model Results:')
-    # Decisiion_Tree_Model(X_train, X_test, y_train, y_test, X.columns)
+    # decision_tree_model(x_train, x_test, y_train, y_test, x.columns)
     # print("-"*100)
 
 
@@ -152,10 +152,10 @@ if __name__ == "__main__":
 # Condition 1:  
 # We are looking what a features are most important for Random Forest model in multiclass system (NonDoH, Benign, Malicious).
 #
-# Conclusion 1: 
-# In test we user system with 3 params to 1 model (Multiclass: NonDoH, Benign, Malicious).
+# Conclusion 1:
+# In test we use system with 3 params to 1 model (Multiclass: NonDoH, Benign, Malicious).
 # 
-# Random Forest it is feature selection and we can see that the most important parameters are:
+# Random Forest it is feature selection, and we can see that the most important parameters are:
 #
 # --- Results for: Random Forest (Multiclass) ---
 # Model Accuracy: 99.73%
@@ -215,4 +215,4 @@ if __name__ == "__main__":
 #
 #
 # We can see that even without calculated features the model performs well (98.12% accuracy).
-# Thhat means we can add revard or punishment for the FN reaction on Malicious DoH beacause it is the most important for us to detect it correctly.
+# That means we can add reward or punishment for the FN reaction on Malicious DoH because it is the most important for us to detect it correctly.

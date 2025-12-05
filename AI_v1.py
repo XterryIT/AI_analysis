@@ -14,14 +14,14 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 # General test for all models
 
 
-def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
+def decision_tree_model(x_train, x_test, y_train, y_test):
     
     model = DecisionTreeClassifier()
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -31,12 +31,12 @@ def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
     print("Confusion Matrix:")
     print(cm)
 
-def Logistic_Regration_model(X_train, X_test, y_train, y_test):
+def logistic_regration_model(x_train, x_test, y_train, y_test):
     model = LogisticRegression(max_iter=15000)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -46,13 +46,13 @@ def Logistic_Regration_model(X_train, X_test, y_train, y_test):
     print("Confusion Matrix:")
     print(cm)
 
-def Random_Forest_model(X_train, X_test, y_train, y_test):
+def random_forest_model(x_train, x_test, y_train, y_test):
     model = RandomForestClassifier(n_estimators=200, random_state=42)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -62,13 +62,13 @@ def Random_Forest_model(X_train, X_test, y_train, y_test):
     print("Confusion Matrix:")
     print(cm)
 
-def KN_model(X_train, X_test, y_train, y_test):
+def kn_model(x_train, x_test, y_train, y_test):
     model = KNeighborsClassifier(n_neighbors=10)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -78,13 +78,13 @@ def KN_model(X_train, X_test, y_train, y_test):
     print("Confusion Matrix:")
     print(cm)
 
-def SVC_model(X_train, X_test, y_train, y_test):
+def svc_model(x_train, x_test, y_train, y_test):
     model = SVC(kernel='rbf', random_state=42)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -105,26 +105,26 @@ def main():
 
     df.fillna(0, inplace=True)
 
-    X = df.drop(['Label'], axis=1) # X - wszystkie kolumny opróć tych co przywidujemy 
-    y = df['Label'] # y - kolumna którą przewidujemy
+    x = df.drop(['Label'], axis=1) # x - all columns except the ones we expect
+    y = df['Label'] # y - column we expect
 
-    # PRzygotowanie dannych testowych
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=300)
+    # preparing test data
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=300)
 
     print("Decision Tree Model:")
-    Decisiion_Tree_Model(X_train, X_test, y_train, y_test)
+    decision_tree_model(x_train, x_test, y_train, y_test)
     print("-"*100)
     print("\nLogistic Regression Model:")
-    Logistic_Regration_model(X_train, X_test, y_train, y_test)
+    logistic_regration_model(x_train, x_test, y_train, y_test)
     print("-"*100)
     print("\nRandom Forest Model:")
-    Random_Forest_model(X_train, X_test, y_train, y_test)
+    random_forest_model(x_train, x_test, y_train, y_test)
     print("-"*100)
     print("\nK-Nearest Neighbors Model:")
-    KN_model(X_train, X_test, y_train, y_test)
+    kn_model(x_train, x_test, y_train, y_test)
     print("-"*100)
     print("\nSupport Vector Classifier Model:")
-    SVC_model(X_train, X_test, y_train, y_test)
+    svc_model(x_train, x_test, y_train, y_test)
     print("-"*100)
 
 

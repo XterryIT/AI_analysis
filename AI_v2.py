@@ -10,13 +10,13 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 
 # We are training only 2 modules and in the end we have a tree. First model telling it is DoH or Non-DoH, second model telling it is Benign or Malicious.
 
-def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
+def decision_tree_model(x_train, x_test, y_train, y_test):
     
     model = DecisionTreeClassifier(random_state=42)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
 
     accuracy = accuracy_score(y_test, y_pred)
@@ -31,13 +31,13 @@ def Decisiion_Tree_Model(X_train, X_test, y_train, y_test):
     print(classification_report(y_test, y_pred))
 
 
-def Random_Forest_model(X_train, X_test, y_train, y_test):
+def random_forest_model(x_train, x_test, y_train, y_test):
     model = RandomForestClassifier(n_estimators=200, random_state=42)
 
-    model.fit(X_train, y_train)
+    model.fit(x_train, y_train)
 
 
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(x_test)
 
     accuracy = accuracy_score(y_test, y_pred)
     cm = confusion_matrix(y_test, y_pred)
@@ -62,27 +62,27 @@ def main():
     print("DoH vs Non-DoH Model Training")
     print("="*60)
 
-    df_A = pd.read_csv('merged_sample_for_1_agent.csv')
+    df_a = pd.read_csv('merged_sample.csv')
 
-    df_A.fillna(0, inplace=True) 
+    df_a.fillna(0, inplace=True)
 
 
-    X_A = df_A.drop(['Label'], axis=1) 
-    y_A = df_A['Label']
+    x_a = df_a.drop(['Label'], axis=1)
+    y_a = df_a['Label']
     
 
     print("0=NonDoH, 1=DoH:")
-    print(y_A.value_counts())
+    print(y_a.value_counts())
 
     # Готовим данные для Модели А
-    X_train_A, X_test_A, y_train_A, y_test_A = train_test_split(X_A, y_A, test_size=0.3, random_state=300)
+    x_train_a, x_test_a, y_train_a, y_test_a = train_test_split(x_a, y_a, test_size=0.3, random_state=300)
 
     # Запускаем модели
     print('Decision Tree Model Results:')
-    Decisiion_Tree_Model(X_train_A, X_test_A, y_train_A, y_test_A)
+    decision_tree_model(x_train_a, x_test_a, y_train_a, y_test_a)
     print("-"*100)
     print('\nRandom Forest Model Results:')
-    Random_Forest_model(X_train_A, X_test_A, y_train_A, y_test_A)
+    random_forest_model(x_train_a, x_test_a, y_train_a, y_test_a)
     print("-"*100)
 
 
@@ -91,26 +91,26 @@ def main():
     print("Benign vs Malicious Model Training")
     print("="*60)
     
-    df_B = pd.read_csv('merged_sample_for_2_agent.csv')
+    df_b = pd.read_csv('merged_sample.csv')
 
-    df_B.fillna(0, inplace=True)
+    df_b.fillna(0, inplace=True)
 
 
-    X_B = df_B.drop(['Label'], axis=1) 
-    y_B = df_B['Label']
+    x_b = df_b.drop(['Label'], axis=1)
+    y_b = df_b['Label']
     
 
     print("0=Benign, 1=Malicious:")
-    print(y_B.value_counts())
+    print(y_b.value_counts())
     
 
-    X_train_B, X_test_B, y_train_B, y_test_B = train_test_split(X_B, y_B, test_size=0.3, random_state=300)
+    x_train_b, x_test_b, y_train_b, y_test_b = train_test_split(x_b, y_b, test_size=0.3, random_state=300)
 
     print('Decision Tree Model Results:')
-    Decisiion_Tree_Model(X_train_B, X_test_B, y_train_B, y_test_B)
+    decision_tree_model(x_train_b, x_test_b, y_train_b, y_test_b)
     print("-"*100)
     print('\nRandom Forest Model Results:')
-    Random_Forest_model(X_train_B, X_test_B, y_train_B, y_test_B)
+    random_forest_model(x_train_b, x_test_b, y_train_b, y_test_b)
     print("-"*100)
 
 
