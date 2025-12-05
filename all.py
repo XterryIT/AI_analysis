@@ -51,7 +51,7 @@ def feature_importance(model, feature_names):
         print("Feature Importance is not natively available or easily interpretable for this model.")
 
 
-def roc_curve_plot(model, x_test, y_test):
+def roc_curve_plot(model, x_test, y_test, smote):
     model_name = model.__class__.__name__
 
     # check if the model has a decision_function or predict_proba method
@@ -95,13 +95,16 @@ def roc_curve_plot(model, x_test, y_test):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title(f'ROC Curve for {model_name} (OvR)')
+    if smote:
+        plt.title(f'ROC Curve for {model_name} (with SMOTE) (OvR)')
+    else:
+        plt.title(f'ROC Curve for {model_name} (OvR)')
     plt.legend(loc="lower right")
     plt.grid(True)
     plt.show()
 
 
-def model_training(model, x_train, x_test, y_train, y_test, feature_names):
+def model_training(model, x_train, x_test, y_train, y_test, feature_names, smote):
     # starting timer
     start_time = time.time()
 
@@ -131,7 +134,7 @@ def model_training(model, x_train, x_test, y_train, y_test, feature_names):
     else:
         print("\nSkipping Feature Importance (Not applicable to this model class).")
 
-    roc_curve_plot(model, x_test, y_test)
+    roc_curve_plot(model, x_test, y_test, smote)
 
 def main():
 
@@ -171,12 +174,12 @@ def main():
     dt = DecisionTreeClassifier(random_state=42)
 
     print(f"\n--- Results for: Decision Tree Model ---")
-    model_training(dt, x_train, x_test, y_train, y_test, x.columns)
+    model_training(dt, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     # training the model on the RESAMPLED data
     print('\n--- Results for: Decision Tree Model (with SMOTE): ---')
-    model_training(dt, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(dt, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -185,12 +188,12 @@ def main():
     rf = RandomForestClassifier(n_estimators=100, random_state=42)
 
     print('\n--- Results for: Random Forest Model: ---')
-    model_training(rf, x_train, x_test, y_train, y_test, x.columns)
+    model_training(rf, x_train, x_test, y_train, y_test, x.columns, False)
     print("-"*100)
 
     # training the model on the RESAMPLED data
     print('\n--- Results for: Random Forest Model (with SMOTE): ---')
-    model_training(rf, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(rf, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -199,11 +202,11 @@ def main():
     lo_r = LogisticRegression(max_iter=15000)
 
     print(f"\n--- Results for: Logistic Regression Model ---")
-    model_training(lo_r, x_train, x_test, y_train, y_test, x.columns)
+    model_training(lo_r, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: Logistic Regression Model (with SMOTE): ---')
-    model_training(lo_r, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(lo_r, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -212,11 +215,11 @@ def main():
     nb = GaussianNB()
 
     print(f"\n--- Results for: Naive Bayes Model ---")
-    model_training(nb, x_train, x_test, y_train, y_test, x.columns)
+    model_training(nb, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: Naive Bayes Model (with SMOTE): ---')
-    model_training(nb, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(nb, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -225,11 +228,11 @@ def main():
     svc = SVC(kernel='rbf', random_state=42)
 
     print(f"\n--- Results for: SVC Model ---")
-    model_training(svc, x_train, x_test, y_train, y_test, x.columns)
+    model_training(svc, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: SVC Model (with SMOTE): ---')
-    model_training(svc, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(svc, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -238,11 +241,11 @@ def main():
     knn = KNeighborsClassifier(n_neighbors=10)
 
     print(f"\n--- Results for: K-NN Model ---")
-    model_training(knn, x_train, x_test, y_train, y_test, x.columns)
+    model_training(knn, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: K-NN Model (with SMOTE): ---')
-    model_training(knn, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(knn, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -251,11 +254,11 @@ def main():
     lda = LinearDiscriminantAnalysis()
 
     print(f"\n--- Results for: LDA Model ---")
-    model_training(lda, x_train, x_test, y_train, y_test, x.columns)
+    model_training(lda, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: LDA Model (with SMOTE): ---')
-    model_training(lda, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(lda, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -264,11 +267,11 @@ def main():
     qda = QuadraticDiscriminantAnalysis()
 
     print(f"\n--- Results for: QDA Model ---")
-    model_training(qda, x_train, x_test, y_train, y_test, x.columns)
+    model_training(qda, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: QDA Model (with SMOTE): ---')
-    model_training(qda, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(qda, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
     #######################################################
@@ -277,11 +280,11 @@ def main():
     mlp = MLPClassifier()
 
     print(f"\n--- Results for: MultiLayer Perceptron Model ---")
-    model_training(mlp, x_train, x_test, y_train, y_test, x.columns)
+    model_training(mlp, x_train, x_test, y_train, y_test, x.columns, False)
     print("-" * 100)
 
     print('\n--- Results for: MultiLayer Perceptron Model (with SMOTE): ---')
-    model_training(mlp, x_train_resampled, x_test, y_train_resampled, y_test, x.columns)
+    model_training(mlp, x_train_resampled, x_test, y_train_resampled, y_test, x.columns, True)
     print("-" * 100)
 
 
