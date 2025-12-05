@@ -99,8 +99,8 @@ import pandas as pd
 #Making huge amnount of data for BIG testing
 
 
-skip_count = 20000  # How many rows to skip
-read_count = 30000  # How many rows to read
+skip_count = 5000  # How many rows to skip
+read_count = 10000  # How many rows to read
 
 
 rows_to_skip = range(1, skip_count + 1)
@@ -112,10 +112,10 @@ df_benign = pd.read_csv('CSVs/Total_CSVs/l2-benign-smote.csv', skiprows=rows_to_
 df_malicious = pd.read_csv('CSVs/Total_CSVs/l2-malicious.csv', skiprows=rows_to_skip, nrows=read_count)
 
 
-doh_temp = df_doh.head(30000).copy()
-non_doh_temp = df_non_doh.head(30000).copy()
-benign_temp = df_benign.head(30000).copy()
-malicious_temp = df_malicious.head(30000).copy()
+doh_temp = df_doh.head(10000).copy()
+non_doh_temp = df_non_doh.head(10000).copy()
+benign_temp = df_benign.head(10000).copy()
+malicious_temp = df_malicious.head(10000).copy()
 
 columns_to_drop = ['TimeStamp','SourceIP', 'DestinationIP' ,'PacketLengthVariance', 'PacketLengthStandardDeviation', 'PacketLengthMean', 'PacketLengthMedian', 'PacketLengthMode', 'PacketLengthSkewFromMedian', 'PacketLengthSkewFromMode', 'PacketLengthCoefficientofVariation', 'PacketTimeVariance', 'PacketTimeStandardDeviation', 'PacketTimeMean', 'PacketTimeMedian', 'PacketTimeMode', 'PacketTimeSkewFromMedian', 'PacketTimeSkewFromMode', 'PacketTimeCoefficientofVariation', 'ResponseTimeTimeVariance', 'ResponseTimeTimeStandardDeviation', 'ResponseTimeTimeMean', 'ResponseTimeTimeMedian', 'ResponseTimeTimeMode', 'ResponseTimeTimeSkewFromMedian', 'ResponseTimeTimeSkewFromMode', 'ResponseTimeTimeCoefficientofVariation']
 

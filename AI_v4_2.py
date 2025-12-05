@@ -121,3 +121,153 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# I tested pipiline on two different datasets:
+#
+# (We have only 19000 Bening samples)
+# (I worte custom SMOTE to extend samples in benign file to 100 000)
+#
+# 1) merged_sample.csv - formed with 10 000 samples from each file 
+# ultimate formed with 30 000 samples from each file
+#
+# In conclusion what we have:
+#
+#
+# !!!!!!!!!!!!!!!!!TRAINING MODEL ON merged_sample.csv:!!!!!!!!!!!!!!!!!!!!!!!1
+# Label
+# 0    20000
+# 1    40000
+# 2    20000
+# Name: count, dtype: int64
+# (0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)
+#
+#
+# Random Forest Model Results:
+#
+# --- Results for: Random Forest (Multiclass) ---
+# Model Accuracy: 97.62%
+#
+#
+#
+# ============================================================
+# CONFUSION MATRIX
+# ============================================================
+#                 |   Pred: Non-DoH |    Pred: Benign | Pred: Malicious
+# ---------------------------------------------------------------------
+#    Act: Non-DoH |            5849 |             120 |               8
+#     Act: Benign |             154 |           11688 |             132
+#  Act: Malicious |              25 |             133 |            5891
+# ---------------------------------------------------------------------
+
+# MALICIOUS TRAFFIC ANALYSIS (Security Focus):
+# - True Positives: 5891
+# - False Negatives (Missed Attacks): 158
+#   --> Breakdown: 25 predicted as Non-DoH + 133 as Benign.
+#
+#
+#
+#
+# !!!!!!!!!!!!!!!!WORKING MODEL ON ultimate_sample.csv:!!!!!!!!!!!!!!!!!
+# Label
+# 0    30000
+# 1    60000
+# 2    30000
+# Name: count, dtype: int64
+
+# ============================================================
+# TESTING RESULTS ON NEW DATA
+# ============================================================
+# Overall Accuracy: 65.85%
+
+
+# --- Confusion Matrix ---
+#                 |   Pred: Non-DoH |    Pred: Benign | Pred: Malicious
+# ----------------------------------------------------------------------
+#    Act: Non-DoH |           20510 |            9157 |             333
+#     Act: Benign |            1037 |           30965 |           27998
+#  Act: Malicious |             785 |            1672 |           27543
+#
+#
+#
+#
+#
+# 2) I took only legitimate samples (without SMOTE generation) 
+# merged_sample.csv - formed with 5 000 samples from each file 
+# ultimate formed with 10 000 samples from each file
+#
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!TRAINING MODEL ON merged_sample.csv:!!!!!!!!!!!!!!!!!!!!!!!
+#  
+#    Label
+# 0     5000
+# 1    10000
+# 2     5000
+# Name: count, dtype: int64
+# (0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)
+
+
+# Random Forest Model Results:
+
+# --- Results for: Random Forest (Multiclass) ---
+# Model Accuracy: 98.05%
+
+
+
+# ============================================================
+# CONFUSION MATRIX
+# ============================================================
+#                 |   Pred: Non-DoH |    Pred: Benign | Pred: Malicious
+# ---------------------------------------------------------------------
+#    Act: Non-DoH |            1421 |              25 |               2
+#     Act: Benign |              22 |            2996 |              39
+#  Act: Malicious |               0 |              29 |            1466
+# ---------------------------------------------------------------------
+
+# MALICIOUS TRAFFIC ANALYSIS (Security Focus):
+# - True Positives: 1466
+# - False Negatives (Missed Attacks): 29
+# ============================================================
+#
+#
+#
+#
+#
+# !!!!!!!!!!!!!!!!!WORKING MODEL ON ultimate_sample.csv:!!!!!!!!!!!!!!!!!
+# 
+# Label     
+# 0    10000
+# 1    20000
+# 2    10000
+# Name: count, dtype: int64
+# (0=NonDoH, 1=Benign-DoH, 2=Malicious-DoH)
+
+
+# ============================================================
+# TESTING RESULTS ON NEW DATA
+# ============================================================
+# Overall Accuracy: 84.54%
+
+# --- Confusion Matrix ---
+#                 |   Pred: Non-DoH |    Pred: Benign | Pred: Malicious
+# ----------------------------------------------------------------------
+#    Act: Non-DoH |            4645 |            5188 |             167
+#     Act: Benign |             147 |           19662 |             191
+#  Act: Malicious |              45 |             445 |            9510
+#
+#
+# In conclusion I want to said that model works better with more legitimate data but still have a problems.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
