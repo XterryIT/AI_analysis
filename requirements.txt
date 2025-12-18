@@ -1,5 +1,6 @@
 pandas
-scikit-learn
+scikit-learn==1.5.2
 numpy
 imblearn
 matplotlib
+imbalanced-learn==0.13.0
